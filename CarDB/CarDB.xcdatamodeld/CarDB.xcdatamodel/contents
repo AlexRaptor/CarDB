@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D109" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="BodyType" representedClassName="BodyType" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="car" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Car" inverseName="bodytype" inverseEntity="Car" syncable="YES"/>
+    </entity>
+    <entity name="Car" representedClassName="Car" syncable="YES">
+        <attribute name="model" attributeType="String" syncable="YES"/>
+        <attribute name="year" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="bodytype" maxCount="1" deletionRule="Nullify" destinationEntity="BodyType" inverseName="car" inverseEntity="BodyType" syncable="YES"/>
+        <relationship name="carclass" maxCount="1" deletionRule="Nullify" destinationEntity="CarClass" inverseName="car" inverseEntity="CarClass" syncable="YES"/>
+        <relationship name="manufacturer" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="car" inverseEntity="Manufacturer" syncable="YES"/>
+    </entity>
+    <entity name="CarClass" representedClassName="CarClass" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="car" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Car" inverseName="carclass" inverseEntity="Car" syncable="YES"/>
+    </entity>
+    <entity name="Manufacturer" representedClassName="Manufacturer" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="car" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Car" inverseName="manufacturer" inverseEntity="Car" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="BodyType" positionX="-170.40234375" positionY="-311.76953125" width="128" height="75"/>
+        <element name="CarClass" positionX="221.89453125" positionY="0.73828125" width="128" height="75"/>
+        <element name="Manufacturer" positionX="-173.66015625" positionY="-47.98828125" width="128" height="75"/>
+        <element name="Car" positionX="49.3359375" positionY="-251.59375" width="128" height="120"/>
+    </elements>
 </model>
