@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>manufacturer</key>
+		<string>BMW</string>
+		<key>model</key>
+		<string>X3</string>
+		<key>year</key>
+		<integer>2019</integer>
+		<key>class</key>
+		<string>Crossover</string>
+		<key>body</key>
+		<string>Jeep</string>
+	</dict>
+	<dict>
+		<key>manufacturer</key>
+		<string>Ford</string>
+		<key>model</key>
+		<string>Explorer</string>
+		<key>year</key>
+		<integer>2012</integer>
+		<key>class</key>
+		<string>Crossover</string>
+		<key>body</key>
+		<string>Jeep</string>
+	</dict>
+	<dict>
+		<key>manufacturer</key>
+		<string>Ford</string>
+		<key>model</key>
+		<string>Focus</string>
+		<key>year</key>
+		<integer>2013</integer>
+		<key>class</key>
+		<string>C</string>
+		<key>body</key>
+		<string>Sedan</string>
+	</dict>
+</array>
+</plist>
