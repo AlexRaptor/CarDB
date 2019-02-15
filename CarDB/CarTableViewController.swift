@@ -9,13 +9,15 @@
 import UIKit
 import CoreData
 
-class ViewController: UIViewController {
+class CarTableViewController: UITableViewController {
 
     private var context: NSManagedObjectContext!
     private var cars = [Car]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.dataSource = self
 
         configureCoreData()
 
@@ -31,13 +33,52 @@ class ViewController: UIViewController {
 
         fetchData()
 
+        tableView.reloadData()
+
         print(cars)
+    }
+}
+
+// MARK: - Table view data source methods
+
+extension CarTableViewController {
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return cars.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CarCell", for: indexPath) as! CarTableViewCell
+
+        let car = cars[indexPath.row]
+        cell.manufacturerLabel.text = car.manufacturer?.name
+        cell.modelLabel.text = car.model
+        cell.yearLabel.text = "\(car.year)"
+        cell.carClassLabel.text = "\(car.carclass?.name ?? "unknown")"
+        cell.bodyTypeLabel.text = "\(car.bodytype?.name ?? "unknown")"
+
+        return cell
+    }
+}
+
+// MARK: - Table view delegate methods
+
+extension CarTableViewController {
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        let car = cars[indexPath.row]
+
+        print(car)
+
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
 // MARK: - Core Data
 
-extension ViewController {
+extension CarTableViewController {
 
     private func configureCoreData() {
 
@@ -65,7 +106,7 @@ extension ViewController {
 
 // MARK: - Initial Data
 
-extension ViewController {
+extension CarTableViewController {
 
     private func isDataExists() -> Bool {
 
