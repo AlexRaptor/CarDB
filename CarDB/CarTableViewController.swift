@@ -49,6 +49,22 @@ class CarTableViewController: UITableViewController {
 
         print(cars)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "ShowSettings" {
+            
+            let settingsViewController = segue.destination as! SettingsViewController
+            
+            settingsViewController.manufacturers = DataService.shared.manufacturers
+            settingsViewController.carClasses = DataService.shared.carClasses
+            settingsViewController.bodyTypes = DataService.shared.bodyTypes
+        }
+    }
+    
+    @IBAction func settingsTapped(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "ShowSettings", sender: self)
+    }
 }
 
 // MARK: - Table view data source methods

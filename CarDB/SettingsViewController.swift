@@ -24,9 +24,9 @@ class SettingsViewController: UIViewController {
     private var activeButtonColor: UIColor?
     private var inactiveButtonColor = UIColor.gray
     
-    private var manufacturers = [Manufacturer]()
-    private var carClasses = [CarClass]()
-    private var bodyTypes = [BodyType]()
+    var manufacturers = [Manufacturer]()
+    var carClasses = [CarClass]()
+    var bodyTypes = [BodyType]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,14 +36,14 @@ class SettingsViewController: UIViewController {
         
         configure()
         
-        updateToolBar()
+        updateUI()
     }
 
     fileprivate func  configure() {
         activeButtonColor = brandsButton.tintColor
     }
     
-    fileprivate func updateToolBar() {
+    fileprivate func updateUI() {
         
         switch activeSection {
             
@@ -52,18 +52,21 @@ class SettingsViewController: UIViewController {
             brandsButton.tintColor = activeButtonColor
             classesButton.tintColor = inactiveButtonColor
             bodiesButton.tintColor = inactiveButtonColor
+            title = "Brands"
             
         case .classes:
             
             brandsButton.tintColor = inactiveButtonColor
             classesButton.tintColor = activeButtonColor
             bodiesButton.tintColor = inactiveButtonColor
+            title = "Classes"
             
         case .bodies:
             
             brandsButton.tintColor = inactiveButtonColor
             classesButton.tintColor = inactiveButtonColor
             bodiesButton.tintColor = activeButtonColor
+            title = "Bodies"
         }
         
         tableView.reloadData()
@@ -71,17 +74,17 @@ class SettingsViewController: UIViewController {
     
     @IBAction func brandsButtonTapped(_ sender: Any) {
         activeSection = .brands
-        updateToolBar()
+        updateUI()
     }
     
     @IBAction func classesButtonTapped(_ sender: Any) {
         activeSection = .classes
-        updateToolBar()
+        updateUI()
     }
     
     @IBAction func bodiesButtonTapped(_ sender: Any) {
         activeSection = .bodies
-        updateToolBar()
+        updateUI()
     }
 }
 
