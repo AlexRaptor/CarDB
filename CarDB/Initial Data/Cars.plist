@@ -10,9 +10,9 @@
 		<key>year</key>
 		<integer>2019</integer>
 		<key>class</key>
-		<string>Crossover</string>
+		<string>J</string>
 		<key>body</key>
-		<string>Jeep</string>
+		<string>Crossover</string>
 	</dict>
 	<dict>
 		<key>manufacturer</key>
@@ -22,9 +22,9 @@
 		<key>year</key>
 		<integer>2012</integer>
 		<key>class</key>
-		<string>Crossover</string>
+		<string>J</string>
 		<key>body</key>
-		<string>Jeep</string>
+		<string>Crossover</string>
 	</dict>
 	<dict>
 		<key>manufacturer</key>

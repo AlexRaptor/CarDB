@@ -108,6 +108,20 @@ class DataService {
         }
     }
     
+    func addEntity<T>(entity: AnyClass, values: [String: AnyObject]) -> T? {
+        
+        guard
+            let _ = T.self as? NSManagedObject.Type,
+            let entity = NSEntityDescription.entity(forEntityName: String(describing: T.self), in: context),
+            let entityInstance = NSManagedObject(entity: entity, insertInto: context) as? T
+            else { return nil }
+        
+        for (key, value) in values {
+            (entityInstance as! NSManagedObject).setValue(value, forKey: key)
+        }
+        
+        return entityInstance
+    }
 }
 
 // MARK: - Initial Data
@@ -146,11 +160,9 @@ extension DataService {
                     if dictionary[itemName] == nil {
                         
                         guard
-                            let entity = NSEntityDescription.entity(forEntityName: String(describing: T.self), in: context),
-                            let entityInstance = NSManagedObject(entity: entity, insertInto: context) as? T
+                            let entityInstance = addEntity(entity: T.self, values: ["name": itemName as AnyObject])
                             else { continue }
                         
-                        entityInstance.setValue(itemName, forKey: "name")
                         dictionary.updateValue(entityInstance, forKey: itemName)
                     }
                 }
@@ -176,15 +188,14 @@ extension DataService {
                 let manufacturer = manufacturers[manufactuterName],
                 let carClass = carClasses[carClassName],
                 let bodyType = bodyTypes[bodyTypeName],
-                let entity = NSEntityDescription.entity(forEntityName: "Car", in: context),
-                let car = NSManagedObject(entity: entity, insertInto: context) as? Car
+                let car = addEntity(entity: Car.self, values: [
+                    "manufacturer": manufacturer,
+                    "model": model as AnyObject,
+                    "year": year as AnyObject,
+                    "carclass": carClass,
+                    "bodytype": bodyType
+                    ])
                 else { continue }
-            
-            car.setValue(manufacturer, forKey: "manufacturer")
-            car.setValue(model, forKey: "model")
-            car.setValue(year, forKey: "year")
-            car.setValue(carClass, forKey: "carclass")
-            car.setValue(bodyType, forKey: "bodytype")
             
             manufacturer.addToCar(car)
             carClass.addToCar(car)
@@ -192,7 +203,7 @@ extension DataService {
         }
         
         do {
-            try context.save()
+            try saveData()
         } catch {
             fatalError("Can't save initial data into context: \(error.localizedDescription)")
         }

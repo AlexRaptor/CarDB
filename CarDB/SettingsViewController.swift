@@ -10,8 +10,10 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    enum ActiveSection {
-        case brands, classes, bodies
+    enum ActiveSection: String {
+        case brands = "manufacturer"
+        case classes = "car class"
+        case bodies = "body type"
     }
     
     @IBOutlet weak var brandsButton: UIBarButtonItem!
@@ -85,6 +87,42 @@ class SettingsViewController: UIViewController {
     @IBAction func bodiesButtonTapped(_ sender: Any) {
         activeSection = .bodies
         updateUI()
+    }
+    
+    private func getCurrentEntityClass() -> AnyClass {
+        
+        switch activeSection {
+            
+        case .brands:
+            return Manufacturer.self
+            
+        case .classes:
+            return CarClass.self
+            
+        case .bodies:
+            return BodyType.self
+        }
+    }
+    
+    @IBAction func addButtonTapped(_ sender: Any) {
+        
+        let alert = UIAlertController(title: "Add", message: "Enter a \(activeSection.rawValue) name", preferredStyle: .alert)
+        alert.addTextField()
+        
+        let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+            
+            let name = alert.textFields![0].text ?? "none"
+            
+            DataService.shared.addEntity(entity: getCurrentEntityClass(),
+                                         values: ["name": name as AnyObject])
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(cancelAction)
+        alert.addAction(okAction)
+        
+        self.present(alert, animated: true, completion: nil)
     }
 }
 

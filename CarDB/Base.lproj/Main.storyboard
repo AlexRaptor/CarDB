@@ -196,6 +196,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2jw-T2-QWk"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Title" id="mYc-w4-lM5">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="bFy-EM-X9w">
+                            <connections>
+                                <action selector="addButtonTapped:" destination="msk-nn-ykP" id="KOq-YV-WdE"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="bodiesButton" destination="Grz-dG-QNW" id="8QF-7V-USD"/>
                         <outlet property="brandsButton" destination="deE-xc-k1b" id="9M5-v9-0Nr"/>
