@@ -8,14 +8,14 @@
 
 import UIKit
 
+enum ActiveSection: String {
+    case brands = "manufacturer"
+    case classes = "car class"
+    case bodies = "body type"
+}
+
 class SettingsViewController: UIViewController {
 
-    enum ActiveSection: String {
-        case brands = "manufacturer"
-        case classes = "car class"
-        case bodies = "body type"
-    }
-    
     @IBOutlet weak var brandsButton: UIBarButtonItem!
     @IBOutlet weak var classesButton: UIBarButtonItem!
     @IBOutlet weak var bodiesButton: UIBarButtonItem!
@@ -29,7 +29,34 @@ class SettingsViewController: UIViewController {
     var manufacturers = [Manufacturer]()
     var carClasses = [CarClass]()
     var bodyTypes = [BodyType]()
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        do {
+            try DataService.shared.fetchManufacturers()
+            manufacturers = DataService.shared.manufacturers
+        } catch {
+            print("Can't fetch manufacturers: \(error.localizedDescription)")
+        }
+
+        do {
+            try DataService.shared.fetchCarClasses()
+            carClasses = DataService.shared.carClasses
+        } catch {
+            print("Can't fetch car classes: \(error.localizedDescription)")
+        }
+
+        do {
+            try DataService.shared.fetchBodyTypes()
+            bodyTypes = DataService.shared.bodyTypes
+        } catch {
+            print("Can't body types : \(error.localizedDescription)")
+        }
+
+        updateUI()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,8 +64,6 @@ class SettingsViewController: UIViewController {
         tableView.delegate = self
         
         configure()
-        
-        updateUI()
     }
 
     fileprivate func  configure() {
@@ -184,8 +209,7 @@ extension SettingsViewController: UITableViewDataSource {
         case .bodies:
             return bodyTypes[index].name ?? ""
         }
-    }
-    
+    }    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
@@ -200,5 +224,8 @@ extension SettingsViewController: UITableViewDataSource {
 // MARK: - Table view delegate methods
 
 extension SettingsViewController: UITableViewDelegate {
-    
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }

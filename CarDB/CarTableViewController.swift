@@ -9,10 +9,25 @@
 import UIKit
 import CoreData
 
-class CarTableViewController: UITableViewController {
+class CarTableViewController: UITableViewController, CarEditingDelegate {
 
-    private var cars = [Car]()
-    
+    internal var cars = [Car]()
+    private var selectedIndex = 0
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+
+        do {
+            try DataService.shared.fetchCars()
+        } catch {
+            fatalError("Error fetching data: \(error.localizedDescription)")
+        }
+
+        cars = DataService.shared.cars
+
+        tableView.reloadData()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -36,22 +51,11 @@ class CarTableViewController: UITableViewController {
         } else {
             print("Data exists")
         }
-
-        do {
-            try DataService.shared.fetchAllData()
-        } catch {
-            fatalError("Error fetching data: \(error.localizedDescription)")
-        }
-        
-        cars = DataService.shared.cars
-        
-        tableView.reloadData()
-
-        print(cars)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+
+        /*
         if segue.identifier == "ShowSettings" {
             
             let settingsViewController = segue.destination as! SettingsViewController
@@ -59,11 +63,57 @@ class CarTableViewController: UITableViewController {
             settingsViewController.manufacturers = DataService.shared.manufacturers
             settingsViewController.carClasses = DataService.shared.carClasses
             settingsViewController.bodyTypes = DataService.shared.bodyTypes
+        } else */
+            if segue.identifier == "AddCar" {
+
+            let carViewController = segue.destination as! CarViewController
+
+            carViewController.viewTitle = "Add Car"
+            carViewController.operationType = .add
+
+        } else if segue.identifier == "EditCar" {
+
+            let carViewController = segue.destination as! CarViewController
+
+            carViewController.viewTitle = "Edit Car"
+            carViewController.operationType = .edit
+
+            let car = cars[selectedIndex]
+
+            carViewController.car = car
+            carViewController.manufacturer = car.manufacturer
+            carViewController.carClass = car.carclass
+            carViewController.bodyType = car.bodytype
+
+
+            carViewController.model = car.model
+            carViewController.year = car.year
         }
     }
     
     @IBAction func settingsTapped(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "ShowSettings", sender: self)
+    }
+
+    @IBAction func addTapped(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "AddCar", sender: self)
+    }
+
+    func carDidAdded(car: Car) {
+        carDidEditing(car: car)
+    }
+
+    func carDidEditing(car: Car) {
+
+        do {
+            try DataService.shared.fetchCars()
+            cars = DataService.shared.cars
+            tableView.reloadData()
+        } catch {
+            print("Can't fetch cars: \(error.localizedDescription))")
+        }
+
+        tableView.reloadData()
     }
 }
 
@@ -96,10 +146,26 @@ extension CarTableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        let car = cars[indexPath.row]
+        selectedIndex = indexPath.row
 
-        print(car)
+        print(cars[selectedIndex])
 
         tableView.deselectRow(at: indexPath, animated: true)
+
+        performSegue(withIdentifier: "EditCar", sender: self)
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+
+        if editingStyle == .delete {
+
+            do {
+                let _ = try DataService.shared.deleteCar(car: cars[indexPath.row])
+                cars.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            } catch {
+                print("Unable to delete: \(error.localizedDescription)")
+            }
+        }
     }
 }

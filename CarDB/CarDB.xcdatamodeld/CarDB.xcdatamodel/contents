@@ -5,11 +5,17 @@
         <relationship name="car" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Car" inverseName="bodytype" inverseEntity="Car" syncable="YES"/>
     </entity>
     <entity name="Car" representedClassName="Car" syncable="YES">
+        <attribute name="id" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="model" attributeType="String" syncable="YES"/>
         <attribute name="year" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="bodytype" maxCount="1" deletionRule="Nullify" destinationEntity="BodyType" inverseName="car" inverseEntity="BodyType" syncable="YES"/>
         <relationship name="carclass" maxCount="1" deletionRule="Nullify" destinationEntity="CarClass" inverseName="car" inverseEntity="CarClass" syncable="YES"/>
         <relationship name="manufacturer" maxCount="1" deletionRule="Nullify" destinationEntity="Manufacturer" inverseName="car" inverseEntity="Manufacturer" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="CarClass" representedClassName="CarClass" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -21,8 +27,8 @@
     </entity>
     <elements>
         <element name="BodyType" positionX="-170.40234375" positionY="-311.76953125" width="128" height="75"/>
+        <element name="Car" positionX="49.3359375" positionY="-251.59375" width="128" height="135"/>
         <element name="CarClass" positionX="221.89453125" positionY="0.73828125" width="128" height="75"/>
         <element name="Manufacturer" positionX="-173.66015625" positionY="-47.98828125" width="128" height="75"/>
-        <element name="Car" positionX="49.3359375" positionY="-251.59375" width="128" height="120"/>
     </elements>
 </model>

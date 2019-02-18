@@ -12,7 +12,8 @@ extension Car {
 
     public override var description: String {
         return """
-        { Manufacturer: \(self.manufacturer?.name ?? "none"), \
+        { ID: \(self.id), \
+        Manufacturer: \(self.manufacturer?.name ?? "none"), \
         Model: \(self.model ?? "none"), \
         Year: \(self.year), \
         Class: \(self.carclass?.name ?? "none"), \

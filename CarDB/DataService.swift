@@ -20,6 +20,15 @@ class DataService {
     var manufacturers = [Manufacturer]()
     var carClasses = [CarClass]()
     var bodyTypes = [BodyType]()
+
+    var currentID: Int64 = 0
+
+    var nextID: Int64 {
+        get {
+            currentID += 1
+            return currentID
+        }
+    }
     
     private init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -37,9 +46,9 @@ class DataService {
     func fetchCars() throws {
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Car")
-        let sortByManufacturers = NSSortDescriptor(key: "manufacturer", ascending: true)
-        let sortByModels = NSSortDescriptor(key: "manufacturer", ascending: true)
-        let sortByYears = NSSortDescriptor(key: "manufacturer", ascending: false)
+        let sortByManufacturers = NSSortDescriptor(key: "manufacturer.name", ascending: true)
+        let sortByModels = NSSortDescriptor(key: "model", ascending: true)
+        let sortByYears = NSSortDescriptor(key: "year", ascending: false)
 
         request.sortDescriptors = [sortByManufacturers, sortByModels, sortByYears]
         
@@ -121,7 +130,66 @@ class DataService {
             throw error
         }
     }
-    
+
+    func deleteCar(car: Car) throws -> Bool {
+
+        context.delete(car)
+
+        do {
+            try saveData()
+        } catch {
+            throw error
+        }
+        
+        return true
+    }
+
+    func updateCar(id: Int64, to newCar: Car) throws -> Bool {
+
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Car")
+        let predicate = NSPredicate(format: "id = %d", id)
+
+        request.predicate = predicate
+
+        do {
+
+            guard let cars = try context.fetch(request) as? [Car] else { return false }
+            guard let car = cars.first else { return false }
+
+            if car.manufacturer != newCar.manufacturer {
+                car.manufacturer?.removeFromCar(car)
+                car.setValue(newCar.manufacturer, forKey: "manufacturer")
+                newCar.manufacturer?.addToCar(car)
+            }
+
+            if car.carclass != newCar.carclass {
+                car.carclass?.removeFromCar(car)
+                car.setValue(newCar.carclass, forKey: "carclass")
+                newCar.carclass?.addToCar(car)
+            }
+
+            if car.bodytype != newCar.bodytype {
+                car.bodytype?.removeFromCar(car)
+                car.setValue(newCar.bodytype, forKey: "bodytype")
+                newCar.bodytype?.addToCar(car)
+            }
+
+            car.setValue(newCar.model, forKey: "model")
+            car.setValue(newCar.year, forKey: "year")
+
+            try saveData()
+
+            return true
+
+        } catch {
+            throw error
+        }
+    }
+
+    func removeCar(id: Int64) throws -> Bool {
+        return false
+    }
+
     func addEntity<T>(entity: T.Type, values: [String: AnyObject]) -> T? {
         
         guard
@@ -203,6 +271,7 @@ extension DataService {
                 let carClass = carClasses[carClassName],
                 let bodyType = bodyTypes[bodyTypeName],
                 let car = addEntity(entity: Car.self, values: [
+                    "id": nextID as AnyObject,
                     "manufacturer": manufacturer,
                     "model": model as AnyObject,
                     "year": year as AnyObject,
