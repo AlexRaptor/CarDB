@@ -108,7 +108,7 @@ class DataService {
         }
     }
     
-    func addEntity<T>(entity: AnyClass, values: [String: AnyObject]) -> T? {
+    func addEntity<T>(entity: T.Type, values: [String: AnyObject]) -> T? {
         
         guard
             let _ = T.self as? NSManagedObject.Type,
@@ -160,7 +160,7 @@ extension DataService {
                     if dictionary[itemName] == nil {
                         
                         guard
-                            let entityInstance = addEntity(entity: T.self, values: ["name": itemName as AnyObject])
+                            let entityInstance = addEntity(entity: T.self, values: ["name": itemName as! AnyObject])
                             else { continue }
                         
                         dictionary.updateValue(entityInstance, forKey: itemName)
@@ -190,8 +190,8 @@ extension DataService {
                 let bodyType = bodyTypes[bodyTypeName],
                 let car = addEntity(entity: Car.self, values: [
                     "manufacturer": manufacturer,
-                    "model": model as AnyObject,
-                    "year": year as AnyObject,
+                    "model": model as! AnyObject,
+                    "year": year as! AnyObject,
                     "carclass": carClass,
                     "bodytype": bodyType
                     ])

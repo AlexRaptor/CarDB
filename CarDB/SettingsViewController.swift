@@ -89,21 +89,6 @@ class SettingsViewController: UIViewController {
         updateUI()
     }
     
-    private func getCurrentEntityClass() -> AnyClass {
-        
-        switch activeSection {
-            
-        case .brands:
-            return Manufacturer.self
-            
-        case .classes:
-            return CarClass.self
-            
-        case .bodies:
-            return BodyType.self
-        }
-    }
-    
     @IBAction func addButtonTapped(_ sender: Any) {
         
         let alert = UIAlertController(title: "Add", message: "Enter a \(activeSection.rawValue) name", preferredStyle: .alert)
@@ -112,9 +97,34 @@ class SettingsViewController: UIViewController {
         let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
             
             let name = alert.textFields![0].text ?? "none"
-            
-            DataService.shared.addEntity(entity: getCurrentEntityClass(),
-                                         values: ["name": name as AnyObject])
+            var newObject: AnyObject?
+
+            switch self.activeSection {
+
+            case .brands:
+                newObject = DataService.shared.addEntity(entity: Manufacturer.self,
+                                             values: ["name": name as! AnyObject])
+                if newObject != nil { self.manufacturers.append(newObject as! Manufacturer) }
+
+            case .classes:
+                newObject = DataService.shared.addEntity(entity: CarClass.self,
+                                             values: ["name": name as! AnyObject])
+                if newObject != nil { self.carClasses.append(newObject as! CarClass) }
+
+            case .bodies:
+                newObject = DataService.shared.addEntity(entity: BodyType.self,
+                                             values: ["name": name as! AnyObject])
+                if newObject != nil { self.bodyTypes.append(newObject as! BodyType) }
+            }
+
+            if newObject != nil {
+                do {
+                    try DataService.shared.saveData()
+                    self.tableView.reloadData()
+                } catch {
+                    print("Can't save data: \(error.localizedDescription)")
+                }
+            }
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
