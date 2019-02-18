@@ -28,7 +28,6 @@
 		667833EA22181E690071A943 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667833E922181E690071A943 /* DataService.swift */; };
 		66D1FB9D22169BCE00B66708 /* Car+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D1FB9C22169BCE00B66708 /* Car+Extensions.swift */; };
 		66D1FBA02216AD3800B66708 /* CarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D1FB9F2216AD3800B66708 /* CarTableViewCell.swift */; };
-		66D1FBA22216C0C900B66708 /* EditCarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D1FBA12216C0C800B66708 /* EditCarViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,7 +54,6 @@
 		667833E922181E690071A943 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		66D1FB9C22169BCE00B66708 /* Car+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Car+Extensions.swift"; sourceTree = "<group>"; };
 		66D1FB9F2216AD3800B66708 /* CarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarTableViewCell.swift; sourceTree = "<group>"; };
-		66D1FBA12216C0C800B66708 /* EditCarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCarViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +93,6 @@
 				66D1FB9F2216AD3800B66708 /* CarTableViewCell.swift */,
 				66578F60221A690A009E6D40 /* CarViewController.swift */,
 				66578F62221A7595009E6D40 /* CarPropertiesTableViewController.swift */,
-				66D1FBA12216C0C800B66708 /* EditCarViewController.swift */,
 				66D1FB9E22169BDC00B66708 /* Extensions */,
 				6618828B22156063002BD53F /* Main.storyboard */,
 				667833E7221813030071A943 /* SettingsViewController.swift */,
@@ -227,7 +224,6 @@
 				66578F78221A9C37009E6D40 /* BodyType+CoreDataClass.swift in Sources */,
 				6618829022156063002BD53F /* CarDB.xcdatamodeld in Sources */,
 				66578F61221A690A009E6D40 /* CarViewController.swift in Sources */,
-				66D1FBA22216C0C900B66708 /* EditCarViewController.swift in Sources */,
 				66578F7A221A9C37009E6D40 /* Manufacturer+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -375,7 +371,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6TN3TH8A9P;
 				INFOPLIST_FILE = CarDB/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -394,7 +390,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6TN3TH8A9P;
 				INFOPLIST_FILE = CarDB/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (

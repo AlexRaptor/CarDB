@@ -25,6 +25,8 @@ class CarTableViewController: UITableViewController, CarEditingDelegate {
 
         cars = DataService.shared.cars
 
+        print(cars)
+
         tableView.reloadData()
     }
 
@@ -100,15 +102,17 @@ class CarTableViewController: UITableViewController, CarEditingDelegate {
     }
 
     func carDidAdded(car: Car) {
-        carDidEditing(car: car)
+        carDidEdited(car: car)
     }
 
-    func carDidEditing(car: Car) {
+    func carDidEdited(car: Car) {
 
         do {
             try DataService.shared.fetchCars()
             cars = DataService.shared.cars
             tableView.reloadData()
+
+            print("delegate: \(cars)")
         } catch {
             print("Can't fetch cars: \(error.localizedDescription))")
         }

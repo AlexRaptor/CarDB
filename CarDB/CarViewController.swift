@@ -12,7 +12,7 @@ protocol CarEditingDelegate {
 
     var cars: [Car] { get set }
     func carDidAdded(car: Car)
-    func carDidEditing(car: Car)
+    func carDidEdited(car: Car)
 }
 
 enum OperationType {
@@ -158,6 +158,8 @@ class CarViewController: UIViewController {
 
         do {
             try DataService.shared.saveData()
+            print("New car saved")
+            
             guard let delegate = delegate else { return }
             delegate.carDidAdded(car: car)
         } catch {
@@ -185,7 +187,7 @@ class CarViewController: UIViewController {
         do {
             if try DataService.shared.updateCar(id: car.id, to: car) {
                 guard let delegate = delegate else { return }
-                delegate.carDidAdded(car: car)
+                delegate.carDidEdited(car: car)
             }
         } catch {
             print("Error saved edited car: \(error.localizedDescription)")

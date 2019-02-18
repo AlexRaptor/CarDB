@@ -21,7 +21,7 @@ class DataService {
     var carClasses = [CarClass]()
     var bodyTypes = [BodyType]()
 
-    var currentID: Int64 = 0
+    private var currentID: Int64 = 0
 
     var nextID: Int64 {
         get {
@@ -57,6 +57,10 @@ class DataService {
             guard let cars = try context.fetch(request) as? [Car] else { return }
             
             self.cars = cars
+
+            for car in cars {
+                if currentID < car.id { currentID = car.id }
+            }
             
         } catch {
             throw error
