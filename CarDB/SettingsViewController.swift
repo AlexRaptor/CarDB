@@ -103,35 +103,52 @@ class SettingsViewController: UIViewController {
 
             case .brands:
                 newObject = DataService.shared.addEntity(entity: Manufacturer.self,
-                                             values: ["name": name as! AnyObject])
-                if newObject != nil { self.manufacturers.append(newObject as! Manufacturer) }
-
+                                                         values: ["name": name as AnyObject])
             case .classes:
                 newObject = DataService.shared.addEntity(entity: CarClass.self,
-                                             values: ["name": name as! AnyObject])
-                if newObject != nil { self.carClasses.append(newObject as! CarClass) }
+                                                         values: ["name": name as AnyObject])
 
             case .bodies:
                 newObject = DataService.shared.addEntity(entity: BodyType.self,
-                                             values: ["name": name as! AnyObject])
-                if newObject != nil { self.bodyTypes.append(newObject as! BodyType) }
+                                                         values: ["name": name as AnyObject])
             }
 
             if newObject != nil {
                 do {
                     try DataService.shared.saveData()
-                    self.tableView.reloadData()
                 } catch {
                     print("Can't save data: \(error.localizedDescription)")
                 }
+
+                do {
+                    switch self.activeSection {
+
+                    case .brands:
+                        try DataService.shared.fetchManufacturers()
+                        self.manufacturers = DataService.shared.manufacturers
+
+                    case .classes:
+                        try DataService.shared.fetchCarClasses()
+                        self.carClasses = DataService.shared.carClasses
+
+                    case .bodies:
+                        try DataService.shared.fetchBodyTypes()
+                        self.bodyTypes = DataService.shared.bodyTypes
+                    }
+
+                    self.tableView.reloadData()
+
+                } catch {
+                    print("Can't fetch data: \(error.localizedDescription)")
+                }
             }
         }
-        
+
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
+
         alert.addAction(cancelAction)
         alert.addAction(okAction)
-        
+
         self.present(alert, animated: true, completion: nil)
     }
 }
@@ -142,7 +159,7 @@ extension SettingsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch activeSection {
-        
+
         case .brands:
             return manufacturers.count
             
@@ -155,7 +172,7 @@ extension SettingsViewController: UITableViewDataSource {
     }
     
     fileprivate func getEntityInfo(forIndex index: Int) -> String {
-    
+
         switch activeSection {
             
         case .brands:
@@ -171,7 +188,7 @@ extension SettingsViewController: UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       
+
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
         cell.textLabel?.text = getEntityInfo(forIndex: indexPath.row)

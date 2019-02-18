@@ -37,6 +37,11 @@ class DataService {
     func fetchCars() throws {
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Car")
+        let sortByManufacturers = NSSortDescriptor(key: "manufacturer", ascending: true)
+        let sortByModels = NSSortDescriptor(key: "manufacturer", ascending: true)
+        let sortByYears = NSSortDescriptor(key: "manufacturer", ascending: false)
+
+        request.sortDescriptors = [sortByManufacturers, sortByModels, sortByYears]
         
         do {
             
@@ -52,7 +57,10 @@ class DataService {
     func fetchManufacturers() throws {
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Manufacturer")
-        
+        let sortByName = NSSortDescriptor(key: "name", ascending: true)
+
+        request.sortDescriptors = [sortByName]
+
         do {
             
             guard let manufacturers = try context.fetch(request) as? [Manufacturer] else { return }
@@ -67,7 +75,10 @@ class DataService {
     func fetchCarClasses() throws {
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "CarClass")
-        
+        let sortByName = NSSortDescriptor(key: "name", ascending: true)
+
+        request.sortDescriptors = [sortByName]
+
         do {
             
             guard let carClasses = try context.fetch(request) as? [CarClass] else { return }
@@ -82,6 +93,9 @@ class DataService {
     func fetchBodyTypes() throws {
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "BodyType")
+        let sortByName = NSSortDescriptor(key: "name", ascending: true)
+
+        request.sortDescriptors = [sortByName]
         
         do {
             
@@ -160,7 +174,7 @@ extension DataService {
                     if dictionary[itemName] == nil {
                         
                         guard
-                            let entityInstance = addEntity(entity: T.self, values: ["name": itemName as! AnyObject])
+                            let entityInstance = addEntity(entity: T.self, values: ["name": itemName as AnyObject])
                             else { continue }
                         
                         dictionary.updateValue(entityInstance, forKey: itemName)
@@ -190,8 +204,8 @@ extension DataService {
                 let bodyType = bodyTypes[bodyTypeName],
                 let car = addEntity(entity: Car.self, values: [
                     "manufacturer": manufacturer,
-                    "model": model as! AnyObject,
-                    "year": year as! AnyObject,
+                    "model": model as AnyObject,
+                    "year": year as AnyObject,
                     "carclass": carClass,
                     "bodytype": bodyType
                     ])
